@@ -7,12 +7,6 @@ from database import (
     retrieve_all_books,
     retrieve_book,
     update_book,
-    retrieve_total_num_books,
-    retrieve_topfive_bestselling,
-    retrieve_topfive_authors,
-    retrieve_book_by_title,
-    retrieve_book_by_author,
-    retrieve_book_by_price
 )
 
 from models import (
@@ -36,7 +30,7 @@ async def get_book_by_id(id):
     book = await retrieve_book(id)
     if book:
         return ResponseModel(book, "Book retrieved successfully!")
-    return ErrorResponseModel("An error occurred.", 404, "Book doesn't exitst.")
+    return ErrorResponseModel("An error occurred.", 404, "Book doesn't exist.")
 
 @router.post("/", response_description="New book added into the database")
 async def add_new_book(book: BookSchema = Body(...)):
@@ -47,7 +41,6 @@ async def add_new_book(book: BookSchema = Body(...)):
 @router.put("/id")
 async def update_book_by_id(id: str, req: UpdateBookModel = Body(...)):
     req = {k: v for k, v in req.dict().items() if v is not None}
-    print(f"req: {req}")
     updated_book = await update_book(id, req)
     if updated_book:
         return ResponseModel(
@@ -69,27 +62,3 @@ async def delete_book_by_id(id: str):
     return ErrorResponseModel(
         "An error occurred", 404, "Book with id {0} doesn't exist.".format(id)
     )
-
-@router.get("/", response_description="Total number of books retrieved!")
-async def get_total_books():
-    return
-
-@router.get("/", response_description="Top 5 bestselling books retrieved!")
-async def get_top_five_bestselling():
-    return
-
-@router.get("/", response_description="Top 5 bestselling authors retrieved!")
-async def get_top_five_authors():
-    return
-
-@router.get("/{title}", response_description="Book retrieved by title!")
-async def get_book_by_title(title):
-    return
-
-@router.get("/{author}", response_description="Book retrieved by author!")
-async def get_book_by_author(author):
-    return
-
-@router.get("/{price}", response_description="Book retrieved by price range!")
-async def get_book_by_price(price):
-    return
