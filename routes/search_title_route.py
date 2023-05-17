@@ -10,4 +10,4 @@ async def search_book_by_title(title):
     books = await retrieve_book_by_title(title)
     if books:
         return ResponseModel(books, "Book retrieved successfully!")
-    return ResponseModel(books, "Empty list returned.")
+    return ResponseModel(books, f"There are no books with the title '{title.title()}' in stock.")
