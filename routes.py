@@ -28,17 +28,17 @@ router = APIRouter()
 async def get_all_books():
     books = await retrieve_all_books()
     if books:
-        return ResponseModel(books, "Books data retrieved successfully!")
+        return ResponseModel(books, "All books retrieved successfully!")
     return ResponseModel(books, "Empty list returned.")
 
-@router.get("/{id}", response_description="Book data retrieved!")
+@router.get("/{id}", response_description="Book retrieved!")
 async def get_book_by_id(id):
     book = await retrieve_book(id)
     if book:
-        return ResponseModel(book, "Book data retrieved successfully!")
+        return ResponseModel(book, "Book retrieved successfully!")
     return ErrorResponseModel("An error occurred.", 404, "Book doesn't exitst.")
 
-@router.post("/", response_description="Book data added into the database")
+@router.post("/", response_description="New book added into the database")
 async def add_new_book(book: BookSchema = Body(...)):
     book = jsonable_encoder(book)
     new_book = await add_book(book)
@@ -58,7 +58,7 @@ async def update_book_by_id(id: str, req: UpdateBookModel = Body(...)):
         "An error occurred", 404, "Book with id {0} doesn't exist.".format(id)
     )
 
-@router.delete("/id", response_description="Book data deleted from the database")
+@router.delete("/id", response_description="Book was deleted from the database")
 async def delete_book_by_id(id: str):
     deleted_book = await delete_book(id)
     if deleted_book:
@@ -75,11 +75,11 @@ async def get_total_books():
     return
 
 @router.get("/", response_description="Top 5 bestselling books retrieved!")
-async def get_topfive_bestselling():
+async def get_top_five_bestselling():
     return
 
 @router.get("/", response_description="Top 5 bestselling authors retrieved!")
-async def get_topfive_authors():
+async def get_top_five_authors():
     return
 
 @router.get("/{title}", response_description="Book retrieved by title!")
@@ -87,9 +87,9 @@ async def get_book_by_title(title):
     return
 
 @router.get("/{author}", response_description="Book retrieved by author!")
-async def get_book_by_title(author):
+async def get_book_by_author(author):
     return
 
 @router.get("/{price}", response_description="Book retrieved by price range!")
-async def get_book_by_title(price):
+async def get_book_by_price(price):
     return
