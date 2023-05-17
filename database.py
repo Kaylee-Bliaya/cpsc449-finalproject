@@ -13,6 +13,8 @@ collection.create_index([("title", ASCENDING)])
 collection.create_index([("author", ASCENDING)])
 collection.create_index([("price", ASCENDING)])
 
+books_sold = {}
+
 # a helper function to parse the given data into a dictionary
 def book_helper(book) -> dict:
     return {
@@ -57,7 +59,7 @@ async def add_book(book_data: dict) -> dict:
     
 # function to update the data of a book given their ID
 async def update_book(id: str, data: dict):
-    # if not data was given, return false
+    # if no data was given, return false
     if len(data) < 1:
         return False
 
@@ -112,6 +114,30 @@ async def retrieve_book_by_price(lower_bound_price: float, upper_bound_price: fl
         books.append(book_helper(book))
         print(books)
     return books
+
+# function to update the data of a book given their ID
+async def purchase_book(id: str, amount: int):
+    # if the amount to be purchased is negative, return false
+    if int(amount) < 0:
+        return False
+    
+    # find the book with the given ID
+    book = await collection.find_one({"_id": ObjectId(id)})
+
+    # if the amount to be purchased is more than the amount in stock, return false
+    if book['stock'] < amount:
+        return False
+    
+    if book:
+        # decrease the amount of books in stock with the given ID
+        new_stock_amount = book['stock'] - amount
+        # update the book stock in the database to the new amount after the purchase
+        updated_book = await collection.update_one({"_id": ObjectId(id)}, {"$set": {"stock": new_stock_amount}})
+        # if the stock has been updated, add the book ID and amount purchased to the list books_sold
+        if updated_book:
+            books_sold[id] = books_sold.get(id, 0) + amount
+            return True
+        return False
 
 # function to retrieve the total number of books in the store
 async def retrieve_total_num_books():
