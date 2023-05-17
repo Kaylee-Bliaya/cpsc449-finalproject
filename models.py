@@ -12,9 +12,9 @@ class BookSchema(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "title": "Ex Book Title",
-                "author": "Ex Author",
-                "description": "Ex book description",
+                "title": "Title",
+                "author": "Author",
+                "description": "Description",
                 "price": 1.00,
                 "stock": 1
             }
@@ -32,9 +32,9 @@ class UpdateBookModel(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "title": "Ex Updated Book Title",
-                "author": "Ex Updated Author",
-                "description": "Ex Updated book description",
+                "title": "Updated Title",
+                "author": "Updated Author",
+                "description": "Updated description",
                 "price": 2.00,
                 "stock": 2
             }

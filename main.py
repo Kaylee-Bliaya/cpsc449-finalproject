@@ -1,6 +1,4 @@
 from fastapi import FastAPI
-from pymongo import MongoClient
-from pymongo.errors import DuplicateKeyError
 from routes.routes import router as BookRouter
 from routes.search_title_route import router as SearchByTitleRouter
 from routes.search_author_route import router as SearchByAuthorRouter
