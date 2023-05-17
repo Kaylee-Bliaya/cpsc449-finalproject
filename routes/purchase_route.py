@@ -1,14 +1,6 @@
-from fastapi import APIRouter, Body
-from fastapi.encoders import jsonable_encoder
-
+from fastapi import APIRouter
 from database import purchase_book
-
-from models import (
-    ErrorResponseModel,
-    ResponseModel,
-    BookSchema,
-    UpdateBookModel
-)
+from models import ErrorResponseModel, ResponseModel
 
 router = APIRouter()
 
