@@ -1,11 +1,10 @@
 from fastapi import APIRouter
-
 from database import retrieve_book_by_price
-
 from models import ResponseModel
 
 router = APIRouter()
 
+# an API endpoint to get a book with the given price range
 @router.get("/{price}", response_description="Book retrieved by price range!")
 async def search_book_by_price(lower_bound_price, upper_bound_price):
     books = await retrieve_book_by_price(lower_bound_price, upper_bound_price)

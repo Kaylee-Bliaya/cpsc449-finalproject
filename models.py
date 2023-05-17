@@ -1,6 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel, Field
 
+# schema to represent how the book data will be stored in the database
 class BookSchema(BaseModel):
     title: str = Field(...)
     author: str = Field(...)
@@ -19,6 +20,8 @@ class BookSchema(BaseModel):
             }
         }
 
+# schema to represent how the book data will be stored in the database 
+# when updating values
 class UpdateBookModel(BaseModel):
     title: Optional[str]
     author: Optional[str]
@@ -37,6 +40,7 @@ class UpdateBookModel(BaseModel):
             }
         }
 
+# a response model to return when an API endpoint has successfully ran
 def ResponseModel(data, message):
     return {
         "data": [data],
@@ -44,6 +48,7 @@ def ResponseModel(data, message):
         "message": message
     }
 
+# a response model to return when an API endpoint has failed to run
 def ErrorResponseModel(error, code, message):
     return {
         "error": error,

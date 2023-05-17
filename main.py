@@ -8,6 +8,7 @@ from routes.search_price_route import router as SearchByPriceRouter
 
 app = FastAPI()
 
+# connection to the routes
 app.include_router(BookRouter, tags=["Book"], prefix="/books")
 app.include_router(SearchByTitleRouter, tags=["Search Books by Title"], prefix="/search_by_title")
 app.include_router(SearchByAuthorRouter, tags=["Search Books by Author"], prefix="/search_by_author")
