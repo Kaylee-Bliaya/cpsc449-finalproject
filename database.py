@@ -141,12 +141,54 @@ async def purchase_book(id: str, amount: int):
 
 # function to retrieve the total number of books in the store
 async def retrieve_total_num_books():
-    return
+    pipe = [{
+        "$group": {
+            "_id": None,
+            "total": {"$sum": "$stock"}
+        }
+    }]
+    result = collection.aggregate(pipe)
+    async for doc in result:
+        total = doc['total']
+    return total
 
 # function to retrieve the top 5 bestselling books in the store
 async def retrieve_topfive_bestselling():
-    return
+    books = []
+    pipe = [
+        {
+            "$group": {
+                "_id": {"book_title": "$title", "book_author": "$author"}, 
+                "total": {"$sum": "$stock"}
+            }
+        }, 
+        {
+            "$sort": {"total": DESCENDING}
+        },
+        {"$limit": 5}
+    ]
+    async for doc in collection.aggregate(pipe):
+        books.append(doc["_id"]["book_title"])
+
+    return books
 
 # function to retrieve the top 5 bestselling authors in the store
 async def retrieve_topfive_authors():
-    return
+    authors = []
+
+    pipe = [
+        {
+            "$group": {
+                "_id": "$author", 
+                "total": {"$sum": "$stock"}
+            }
+        }, 
+        {
+            "$sort": {"total": DESCENDING}
+        },
+        {"$limit": 5}
+    ]
+    async for doc in collection.aggregate(pipe):
+        authors.append(doc["_id"])
+
+    return authors
