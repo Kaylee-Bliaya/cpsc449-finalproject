@@ -24,6 +24,14 @@ def book_helper(book) -> dict:
         "stock": book["stock"]
     }
 
+def convert_to_title(book_data):
+    # loop through the values in book_data and convert all text 
+    # into lowercase
+    for k, v in book_data.items():
+        if type(v) == str:
+            book_data[k] = v.title()
+    return book_data
+
 # function to retrieve all books stored in the database
 async def retrieve_all_books():
     books = []
@@ -41,11 +49,8 @@ async def retrieve_book(id: str) -> dict:
 
 # function to add a new book to the database
 async def add_book(book_data: dict) -> dict:
-    # loop through the values in book_data and convert all text 
-    # into lowercase
-    for k, v in book_data.items():
-        if type(v) == str:
-            book_data[k] = v.lower()
+    book_data = convert_to_title(book_data)
+
     book = await collection.insert_one(book_data)
     new_book = await collection.find_one({"_id": book.inserted_id})
     return book_helper(new_book)
@@ -55,6 +60,8 @@ async def update_book(id: str, data: dict):
     # if not data was given, return false
     if len(data) < 1:
         return False
+
+    data = convert_to_title(data)
     
     # find the book with the given ID
     book = await collection.find_one({"_id": ObjectId(id)})
@@ -83,7 +90,7 @@ async def retrieve_book_by_title(title: str) -> dict:
     books = []
     # loop through the collection and add all books that match the 
     # given title to the books list
-    async for book in collection.find({"title": {"$eq": title.upper()}}):
+    async for book in collection.find({"title": {"$eq": title.title()}}):
         books.append(book_helper(book))
     return books
 
@@ -92,7 +99,7 @@ async def retrieve_book_by_author(author: str) -> dict:
     books = []
     # loop through the collection and add all books that match the 
     # given author to the books list
-    async for book in collection.find({"author": {"$eq": author}}):
+    async for book in collection.find({"author": {"$eq": author.title()}}):
         books.append(book_helper(book))
     return books
 
