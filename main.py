@@ -22,16 +22,19 @@ async def index():
     await retrieve_topfive_authors()
     return {"message": "Welcome to this Bookstore API!"}
 
+# API endpoint to get the total number of books in stock
 @app.get('/books_in_stock', tags=["Root"])
 async def get_total_books():
     total_books = await retrieve_total_num_books()
     return {"Total Books in Stock": total_books}
 
+# API endpoint to the get the top 5 bestselling books
 @app.get('/topselling_books', tags=["Root"])
 async def get_topselling_books():
     books = await retrieve_topfive_bestselling()
     return {"Top 5 Bestselling Books:": books}
 
+# API endpoint to get the top 5 bestselling authors
 @app.get('/topselling_authors', tags=["Root"])
 async def get_topselling_authors():
     authors = await retrieve_topfive_authors()
