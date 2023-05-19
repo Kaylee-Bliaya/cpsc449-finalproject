@@ -22,6 +22,11 @@ async def index():
     await retrieve_topfive_authors()
     return {"message": "Welcome to this Bookstore API!"}
 
+@app.get("/favicon.ico")
+async def favicon():
+    # Return a 204 No Content response for favicon.ico requests
+    return Response(status_code=204)
+
 # API endpoint to get the total number of books in stock
 @app.get('/books_in_stock', tags=["Root"])
 async def get_total_books():
