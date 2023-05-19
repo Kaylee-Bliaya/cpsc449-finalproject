@@ -18,8 +18,6 @@ app.include_router(PurchaseRouter, tags=["Purchase Book(s)"], prefix="/purchase"
 
 @app.get('/', tags=["Root"])
 async def index():
-    await retrieve_topfive_bestselling()
-    await retrieve_topfive_authors()
     return {"message": "Welcome to this Bookstore API!"}
 
 # API endpoint to get the total number of books in stock
